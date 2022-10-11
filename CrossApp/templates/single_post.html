@@ -1,0 +1,231 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% load hitcount_tags %}
+{% block content %}
+<section class="banner-area organic-breadcrumb">
+    <div class="container">
+        <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+            <div class="col-first">
+                <h1>Details Blog</h1>
+                <nav class="d-flex align-items-center">
+                    <a href="index.html">Home<span class="lnr lnr-arrow-right"></span></a>
+                    <a href="category.html">Blog details</a>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Banner Area -->
+
+<!--================Blog Area =================-->
+<section class="blog_area single-post-area section_gap">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 posts-list">
+                <div class="single-post row">
+                    <div class="col-lg-12">
+                        <div class="feature-img">
+                            <img class="img-fluid" src="{{ blog_detail.image.url }}" alt="">
+                        </div>
+                    </div>
+                    <div class="col-lg-3  col-md-3">
+                        <div class="blog_info text-right">
+                            <div class="post_tag">
+                                {% if blog_detail.for_rent %}
+                                    <a class="active" href="#">On sale</a>
+                                {% endif %} 
+                                {% if blog_detail.for_rent %}   
+                                    <a class="active" href="#">For rent</a>
+                                {% endif %}
+                            </div>
+                            <ul class="blog_meta list">
+                                <li><a href="#">{{blog_detail.author.username}}<i class="lnr lnr-user"></i></a></li>
+                                <li><a href="#">{{blog_detail.date_created|date:'j F Y'}}<i class="lnr lnr-calendar-full"></i></a></li>
+                                <li><a href="#">{% get_hit_count for blog_detail %} Views<i class="lnr lnr-eye"></i></a></li>
+                                <li><a href="#">{{ number_comments }} Comments<i class="lnr lnr-bubble"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-9 col-md-9 blog_details">
+                        <h2>{{blog_detail.titre}}</h2>
+                        <p class="excert">
+                            {{blog_detail.more_info}}
+                        </p>
+                        
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="row">
+                            <div class="col-12">
+                                    <div class="order_box">
+                                        <h2>Property Information</h2>
+                                        <ul class="list">
+                                            <li><a href="#">DETAILS <span>Total</span></a></li>
+                                            <li><a href="#">Total Area <span class="middle"></span> <span class="last">{{blog_detail.total_area}} m</span></a></li>
+                                            <li><a href="#">Living Area <span class="middle"></span> <span class="last">{{blog_detail.living_area}} m</span></a></li>
+                                            <li><a href="#">Address <span class="middle"></span> <span class="last">{{blog_detail.address}}</span></a></li>
+                                        </ul>
+                                        <ul class="list list_2">
+                                            <li><a href="#">Number Pieces <span>{{blog_detail.nbres_pieces}} pcs</span></a></li>
+                                            <li><a href="#">Property Type <span>{{blog_detail.property_type}}</span></a></li>
+                                            {% if blog_detail.on_sale %}
+                                                <li><a href="#">Sale Price<span>${{blog_detail.price_on_sale}}</span></a></li>
+                                            {% endif %}
+                                            {% if blog_detail.for_rent %}    
+                                                <li><a href="#">Rent Price <span>${{blog_detail.price_for_rent}}</span></a></li>
+                                            {% endif %}
+                                            <li><a href="#">Prix <span>${{blog_detail.price}}</span></a></li>    
+                                            <li><a href="#">Total <span>${{blog_detail.price}}</span></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="comments-area">
+                    <h4>{{number_comments}} Comments</h4>
+                    {% for comment in comments %}
+                        <div class="comment-list">
+                            <div class="single-comment justify-content-between d-flex">
+                                <div class="user justify-content-between d-flex">
+                                    <div class="thumb">
+                                        <img style="width:60px;height:60px ;" src="{{comment.author_comment.photo.url}}" alt="">
+                                    </div>
+                                    <div class="desc">
+                                        <h5><a href="#">{{ comment.author_comment.username }}</a></h5>
+                                        <p class="date">{{ comment.date_created }} </p>
+                                        <p class="comment">
+                                            {{comment.comment}}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="reply-btn">
+                                    <a href="" class="btn-reply text-uppercase">reply</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="comment-form">
+                    <h4>Leave a Reply</h4>
+                    <form method="POST" action= "{% url 'blog_detail' blog_detail.id %}">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            {% render_field form.comment placeholder='Your comment' class="form-control" %}
+                        </div>
+                        <button name="post_comment" type="submit" class="primary-btn submit_btn" style="border:none ;">Post Comment</button>
+                    </form>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="blog_right_sidebar">
+                    <aside class="single_sidebar_widget search_widget">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Search Posts" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Search Posts'">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="button"><i class="lnr lnr-magnifier"></i></button>
+                            </span>
+                        </div><!-- /input-group -->
+                        <div class="br"></div>
+                    </aside>
+                    <aside class="single_sidebar_widget author_widget">
+                        {% if blog_detail.author.photo %}
+                            <img class="author_img rounded-circle" style="width: 120px;height: 120px;" src="{{ blog_detail.author.photo.url }}" alt="">
+                        {% else %}    
+                        <img src="{% static 'img/user.png' %}" alt="" style="width: 120px;height: 120px"> 
+                        {% endif %}
+                        <h4>{{blog_detail.author.username}}</h4>
+                        <p>{{blog_detail.author.job}}</p>
+                        <div class="social_icon">
+                            <a href="#"><i class="fa fa-facebook"></i></a>
+                            <a href="#"><i class="fa fa-twitter"></i></a>
+                            <a href="#"><i class="fa fa-github"></i></a>
+                            <a href="#"><i class="fa fa-behance"></i></a>
+                        </div>
+                        <p>{{blog_detail.author.description|truncatewords:20}}</p>
+                        <div class="br"></div>
+                    </aside>
+                    <aside class="single_sidebar_widget popular_post_widget">
+                        <h3 class="widget_title">Popular Posts</h3>
+                        <div class="media post_item">
+                            <img style="width:100px;height:60px;"src="{{ blog_detail.image.url }}" alt="post">
+                            <div class="media-body">
+                                <a href="blog-details.html">
+                                    <h3>{{blog_detail.titre}}</h3>
+                                </a>
+                                <p>02 Hours ago</p>
+                            </div>
+                        </div>
+                        <div class="media post_item">
+                            <img src="{% static 'img/blog/popular-post/post2.jpg' %}" alt="post">
+                            <div class="media-body">
+                                <a href="blog-details.html">
+                                    <h3>The Amazing Hubble</h3>
+                                </a>
+                                <p>02 Hours ago</p>
+                            </div>
+                        </div>
+                        <div class="media post_item">
+                            <img src="{% static 'img/blog/popular-post/post3.jpg' %}" alt="post">
+                            <div class="media-body">
+                                <a href="blog-details.html">
+                                    <h3>Astronomy Or Astrology</h3>
+                                </a>
+                                <p>03 Hours ago</p>
+                            </div>
+                        </div>
+                        <div class="media post_item">
+                            <img src="{% static 'img/blog/popular-post/post4.jpg' %}" alt="post">
+                            <div class="media-body">
+                                <a href="blog-details.html">
+                                    <h3>Asteroids telescope</h3>
+                                </a>
+                                <p>01 Hours ago</p>
+                            </div>
+                        </div>
+                        <div class="br"></div>
+                    </aside>
+                    <aside class="single_sidebar_widget ads_widget">
+                        <a href="#"><img class="img-fluid" src="{% static 'img/blog/add.jpg' %}" alt=""></a>
+                        <div class="br"></div>
+                    </aside>
+                    <aside class="single-sidebar-widget tag_cloud_widget" style="margin-bottom:70px;">
+                        <h4 class="widget_title">Tag Clouds</h4>
+                        <ul class="list">
+                            <li><a href="#">All</a></li>
+                            <li><a href="#">Rent</a></li>
+                            <li><a href="#">Sale</a></li> 
+                        </ul>
+                    </aside>
+                    <form method="POST">
+                        {% csrf_token %}
+                    <aside class="single-sidebar-widget newsletter_widget">
+                        <h4 class="widget_title">You are interested contact the agent via this form now</h4>
+                        <p>
+                            Here, I focus on a range of items and features that we use in life without
+                            giving them a second thought.
+                        </p>
+                        <div class="form-group d-flex flex-row">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text"><i class="fa fa-envelope" aria-hidden="true"></i></div>
+                                </div>
+                                {% render_field form_contact.email class="form-control" placeholder='email' %}  
+                            </div>
+                        </div>
+            
+                        <div class="form-outline">
+                            {% render_field form_contact.message class="form-control" placeholder='message' %}
+                            <button name="post_contact" type="submit" class="bbtns" style="border:none ;">Send Message</button>
+                          </div>
+                        <div class="br"></div>
+                    </form>
+                    </aside>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}

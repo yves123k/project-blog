@@ -1,0 +1,176 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% load widget_tweaks %}	
+{% block content %}
+
+	<!-- End Header Area -->
+
+    <!-- Start Banner Area -->
+    <section class="banner-area organic-breadcrumb">
+        <div class="container">
+            <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+                <div class="col-first">
+                    <h1>My Profil</h1>
+                    <nav class="d-flex align-items-center">
+                        <a href="index.html">Home<span class="lnr lnr-arrow-right"></span></a>
+                        <a href="single-product.html">Profil</a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End Banner Area -->
+
+    <!--================Checkout Area =================-->
+    <section class="checkout_area section_gap">
+        <div class="container">
+            
+            <div class="billing_details">
+                <div class="row">
+                    <div class="col-lg-8">
+                        <h3>My Profil Data</h3>
+                        <form class="row contact_form" method="POST" >
+                            {% csrf_token %}
+                            {% for info in update_info %}
+                            <div class="col-md-6 form-group p_star">
+                                {% render_field form.username class="form-control" value=info.username  %}
+                            </div>
+                            <div class="col-md-6 form-group p_star">
+                                {% render_field form.first_name class="form-control" value=info.first_name  %}
+                                
+                            </div>
+                            <div class="col-md-6 form-group p_star">
+                                {% render_field form.last_name class="form-control" value=info.last_name  %}
+                            </div>
+                            <div class="col-md-6 form-group p_star">
+                                {% render_field form.job class="form-control" value=info.job  %}
+                                <!-- <input type="text" class="form-control" id="zip" name="zip" value={{user.date_joined}} disabled> -->
+                                
+                            </div>
+                            
+                            <div class="col-md-12 form-group">
+                                {% render_field form.email class="form-control" value=info.email  %}
+                            </div>
+                            <div class="col-md-6 form-group p_star">
+                                {% render_field form.phoneNumber class="form-control" value=info.phoneNumber %}
+                            </div>
+                            <div class="col-md-6 form-group p_star">
+                                {% render_field form.website class="form-control" value=info.website  %}
+                            </div>
+    
+                            <div class="col-md-12 form-group p_star">
+                                <input type="email" class="form-control" value={{info.email}} disabled>
+                                <!-- {% render_field form.address class="form-control" placeholder="Email"  %} -->
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <div class="creat_account">
+                                    <h3>Description</h3>
+                                </div>
+                                {% render_field form.description class="form-control" value=info.description  %}
+                            </div>
+                            <div class="col-md-12 form-group p_star">
+                                <button type="submit" class="btn btn-primary">Update Change</button>
+                                  
+                            </div>
+                            {% endfor %}
+                        </form>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="blog_right_sidebar">
+                            <aside class="single_sidebar_widget search_widget">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Search Posts" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Search Posts'">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default" type="button"><i class="lnr lnr-magnifier"></i></button>
+                                    </span>
+                                </div><!-- /input-group -->
+                                <div class="br"></div>
+                            </aside>
+                            <aside class="single_sidebar_widget author_widget">
+                                {% if user.photo  %}
+                                    <div style="border-radius:40%"> <img style=" width: 120px;height: 120px;border: 1px solid #000;border-radius:50%" id="img_profil" src="{{user.photo.url}}"/> </div>
+                                {% else %}
+                                    <div style="border-radius:40%"> <img style=" width: 120px;height: 120px;border: 1px solid #000;border-radius:50%" id="img_profil" src="{% static 'img/user.png' %}"/> </div>
+                                {% endif %}
+                                <h4>{{user.username}}</h4>
+                                <p>{{user.job}}</p>
+                                <div class="social_icon">
+                                    <a href="#"><i class="fa fa-facebook"></i></a>
+                                    <a href="#"><i class="fa fa-twitter"></i></a>
+                                    <a href="#"><i class="fa fa-github"></i></a>
+                                    <a href="#"><i class="fa fa-behance"></i></a>
+                                </div>
+                                <p>{{user.description|truncatewords:20}}</p>
+                                <div class="br"></div>
+                            </aside>
+                            <aside class="single_sidebar_widget popular_post_widget">
+                                <h3 class="widget_title">My Ads</h3>
+                                <div class="media post_item">
+                                    <img src="{% static 'img/blog/popular-post/post1.jpg' %}" alt="post">
+                                    <div class="media-body">
+                                        <a href="blog-details.html">
+                                            <h3>Space The Final Frontier</h3>
+                                        </a>
+                                        <p>02 Hours ago</p>
+                                    </div>
+                                </div>
+                                <div class="media post_item">
+                                    <img src="{% static 'img/blog/popular-post/post2.jpg' %}" alt="post">
+                                    <div class="media-body">
+                                        <a href="blog-details.html">
+                                            <h3>The Amazing Hubble</h3>
+                                        </a>
+                                        <p>02 Hours ago</p>
+                                    </div>
+                                </div>
+                                <div class="br"></div>
+                            </aside>
+                            <aside class="single_sidebar_widget ads_widget">
+                                <a href="#"><img class="img-fluid" src="{% static 'img/blog/add.jpg' %}" alt=""></a>
+                                <div class="br"></div>
+                            </aside>
+                            
+                            
+                            
+                        </div>
+                            
+                            
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    {% for message in messages %}
+        {% if message.tags == 'success' %}
+            <script src="{% static 'sweetalert.min.js' %}"></script>
+                    <link rel="stylesheet" href="{% static 'style_modal.css' %}">
+                    <script>
+                        swal({
+                            title: "{{message}}",
+                            text: "{{message}}",
+                            icon: "success",
+                            button: "success",
+                            });
+                    </script> 
+        {% else %}
+            <script src="{% static 'sweetalert.min.js' %}"></script>
+            <link rel="stylesheet" href="{% static 'style_modal.css' %}">
+            <script>
+                swal({
+                    title: "{{message}}",
+                    text: "{{message}}",
+                    icon: "error",
+                    button: "success",
+                    });
+            </script>
+        {% endif %}
+    {% endfor %}
+    <script>
+        document.getElementById("id_description").value = "{{user.description}}";
+    </script>
+    <!--================End Checkout Area =================-->
+
+    <!-- start footer Area -->
+{% endblock %}    
