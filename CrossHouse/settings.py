@@ -14,6 +14,7 @@ from pathlib import Path
 from .info import *
 import os
 import django
+import environ
 from django.utils.encoding import force_str
 django.utils.encoding.force_text = force_str
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -23,19 +24,25 @@ EMAIL_HOST = EMAIL_HOST
 EMAIL_HOST_USER = EMAIL_HOST_USER
 EMAIL_HOST_PASSWORD = EMAIL_HOST_PASSWORD
 EMAIL_PORT = EMAIL_PORT
-BASE_DIR = Path(__file__).resolve().parent.parent
 
+env = environ.Env()
+BASE_DIR = Path(__file__).resolve().parent.parent
+environ.Env.read_env(env_file = str(BASE_DIR / "CrossHouse" / "venv"))
+print(BASE_DIR)
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure--)&kb#t)!^w=$zud)mrm5#vh8%a_m7$9+jkbk$suv=5gh6=dxe'
+SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env.bool("DEBUG" , False)
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = env.list("ALLOWED_HOST")
+print(SECRET_KEY)
+print(DEBUG)
+print(type(DEBUG))
+print(ALLOWED_HOSTS)
 
 # Application definition
 

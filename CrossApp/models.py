@@ -3,7 +3,6 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User, PermissionsMixin
 from django.contrib.auth import get_user_model
-from phonenumber_field.modelfields import PhoneNumberField
 from django.core.validators import RegexValidator
 from hitcount.models import HitCountMixin
 
