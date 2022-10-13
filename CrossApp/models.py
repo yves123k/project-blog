@@ -69,7 +69,7 @@ class Create_Ad(RepeatField, HitCountMixin):
         blank=True
     )
     titre = models.CharField(max_length=100, default="ND")
-    image = models.ImageField(upload_to="ad", blank=True)
+    image = models.ImageField(upload_to="ad", blank=False)
     price_on_sale = models.FloatField(max_length=100)
     price_for_rent = models.FloatField(max_length=100)
     living_area = models.CharField(default="....", max_length=100)

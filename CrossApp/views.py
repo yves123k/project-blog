@@ -6,7 +6,7 @@ from django.views.generic import TemplateView, View, CreateView, ListView, Updat
 from hitcount.views import HitCountDetailView 
 from django.views.generic.edit import FormMixin
 from django.shortcuts import render, redirect,reverse
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login,logout
 from django.contrib import messages
 from .models import Comments, MyUser
 from .forms import AdForm, FormComment, LoginForm, SignupForm, UpdateForm, formAc,FormContact
@@ -165,11 +165,11 @@ class All_User(ListView):
     context_object_name = 'users'
 
     def get(self, request):
-        user_manager = MyUser.objects.all()
-        paginator = Paginator(user_manager, 4)  # Show 25 contacts per page.
+        user_list = MyUser.objects.all()
+        paginator = Paginator(user_list, 4)  # Show 25 contacts per page.
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
-        return render(request, self.template_name, {'user_manager': page_obj})
+        return render(request, self.template_name, {'blogger': page_obj})
 
 
 class Update_User(View):
@@ -261,6 +261,7 @@ class AdUpdate_View(UpdateView):
     model = Create_Ad
     template_name = "create_ad.html"
     form_class = AdForm
+    context_object_name = 'blog'
 
     def form_valid(self, form):
         messages.success(self.request, "Ad Update Success")
@@ -322,6 +323,8 @@ class BlogDetailView(FormMixin,HitCountDetailView):
         context['form_contact'] = FormContact()
         context['comments'] = Comments.objects.filter(ad_comments=self.object) 
         context['number_comments'] = Comments.objects.filter(ad_comments=self.object).count()
+        # seller = Create_Ad.objects.filter(pk=self.object.pk)
+        # print(seller)
         return context
 
     def post(self,request,*args,**kwargs):
@@ -356,20 +359,24 @@ class BlogDetailView(FormMixin,HitCountDetailView):
         print(email_seller)  
         current_site = get_current_site(request)
         email_subject = "Croospay Offer received "
-        message2 = render_to_string('contact-seller.html', {
+        message2 = render_to_string('contact_seller.html', {
             
             'name_seller': username_seller,
             'domain': current_site.domain,
             'message': message,
             'photo': request.user.photo.url,
-            'name_client':request.user.username
+            'name_client':request.user.username,
+            'email_client' : request.user.email,
+            'number_client': request.user.phoneNumber,
+            'job': request.user.job
+
 
         })
         email = EmailMessage(
             email_subject,
             message2,
             settings.EMAIL_HOST_USER,
-            [email_seller],
+            [settings.EMAIL_HOST_USER],
         )
         email.content_subtype = "html"
         email.fail_silently = True
@@ -390,14 +397,29 @@ class BlogDetailView(FormMixin,HitCountDetailView):
         number = Comments.objects.filter(ad_comments=request.object)
         return number
 
-def valide_rdv (request):
-        form = FormComment(request.POST)
-        if form.is_valid():
-            email = request.POST.get('email_contact')
-            message = request.POST.get('area_message')
-            print(email,message)            
-        else:
-            return form        
+class ContactView(TemplateView):
+    template_name = "contact.html"
+    
+class MyBlogView(View):
+    template_name = "myblog.html"
+    
+    def get(self,request):
+        myblog = Create_Ad.objects.filter(author=request.user.pk)
+        print(myblog)
+        return render(request, self.template_name, locals())
+
+class BloggerProfilView(View):
+    template_name = "users.html"
+
+    def get(self,request,pk):
+        blogger_query = MyUser.objects.filter(pk=pk)
+        return render(request, self.template_name, locals())
+
+class LogoutView(View):
+    def get(self, request):
+        logout(request)
+        return render(request,"index.html")
+                
 # def post(self,request,pk):
 #     if request.method == "POST":
 #         email = request.POST.get("email_contact")

@@ -1,0 +1,46 @@
+<!-- this is the markup. you can change the details (your own name, your own avatar etc.) but don’t change the basic structure! -->
+{% load static %}
+<link rel="stylesheet" href="{% static 'style_contact.css' %}">
+<aside class="profile-card">
+  
+	<header>
+	  
+	  <!-- here’s the avatar -->
+	  <h3 style="font-size:20px ;"> CROSSPAY </h3>
+	  <h3 style="font-size:20px,font-weight:800px;"> Hello {{name_seller}} someone is interested in your ad and would like to chat with you</h3>
+	  <a href="http://ali.shahab.pk">
+		<img src="http://{{ domain }}{{photo}}">
+	  </a>
+  
+	  <!-- the username -->
+	  <h1>{{ name_client }}</h1>
+	  
+	  <!-- and role or location -->
+	  <h2>{{ job }}</h2>
+	  
+	</header>
+	
+	<!-- bit of a bio; who are you? -->
+	<div class="profile-bio">
+	  
+	  <p>{{message}}</p>
+	  
+	</div>
+	
+	<!-- some social links to show off -->
+	<ul class="profile-social-links">
+	  
+	  <!-- twitter - el clásico  -->
+	  <!-- codepen - your codepen profile-->
+	  <li>
+		<a href="https://codepen.io/alishahab">
+		  <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/210284/social-codepen.svg">
+		</a>
+	  </li>
+	  
+	  <!-- add or remove social profiles as you see fit -->
+	  
+	</ul>
+	
+  </aside>
+  <!-- that’s all folks! -->

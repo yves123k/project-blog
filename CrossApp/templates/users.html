@@ -1,0 +1,122 @@
+{% extends 'base/base.html' %}
+{% load static %}
+	<!-- End Header Area -->
+
+	<!-- start banner Area -->
+{% block content %}
+{% load hitcount_tags %}	
+<section class="banner-area organic-breadcrumb">
+    <div class="container">
+        <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+            <div class="col-first">
+                <h1>Blogger</h1>
+                <nav class="d-flex align-items-center">
+                    <a href="index.html">Home<span class="lnr lnr-arrow-right"></span></a>
+                    <a href="category.html">Blogger_List</a>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Banner Area -->
+
+<!--================Blog Categorie Area =================-->
+<section class="blog_categorie_area">
+    <div class="container">
+        <div class="row">
+        
+            <div class="col-lg-12">
+                <div class="categories_post">
+                    <div class="categories_details">
+                        <div class="categories_text">
+                            <a href="blog-details.html">
+                                <h5 style="color:black ;">Blogger List</h5>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>        
+        </div>
+    </div>
+</section>
+<!--================Blog Categorie Area =================-->
+
+<!--================Blog Area =================-->
+<section class="blog_area">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="blog_left_sidebar">
+                    {% for blog in blogger %}
+                        <article class="row blog_item">
+                            <div class="col-md-3">
+                                <div class="blog_info text-right">
+                                    <ul class="blog_meta list">
+                                        <li><a href="#">{{ blog.username }}<i class="lnr lnr-user"></i></a></li>
+                                        <li><a href="#">{{ blog.date_joined|date:'l j F Y' }}<i class="lnr lnr-calendar-full"></i></a></li>
+                                        <li><a href="#">{% get_hit_count for blog %} Views<i class="lnr lnr-eye"></i></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-md-9">
+                                <div class="blog_post" style="text-align:center ;">
+                                    {% if blog.photo %}
+                                        <img style="width: 120px;height: 120px;border: 1px solid #000;border-radius:50%" src="{{ blog.photo.url }}" alt="">
+                                    {% else %}
+                                        <img style="width: 120px;height: 120px;border: 1px solid #000;border-radius:50%" src="{% static 'img/user.png' %}" alt=""> 
+                                    {% endif %}       
+                                    <div class="blog_details">
+                                        <a href="{% url 'view_profil' blog.pk %}">
+                                            <h2>{{ blog.username }}</h2>
+                                            <h2>{{ blog.job }}</h2>
+                                        </a>
+                                        <p>{{ blog.description|truncatewords_html:25|safe }}</p>
+                                        <a href="{% url 'view_profil' blog.pk %}" class="white_bg_btn">View Profile</a>
+                                       
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    {% endfor %}
+                    <nav class="blog-pagination justify-content-center d-flex">
+                        <ul class="pagination">
+                            <li class="page-item">
+                                <a href="#" class="page-link" aria-label="Previous">
+                                    <span aria-hidden="true">
+                                        <span class="lnr lnr-chevron-left"></span>
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="page-item"><a href="#" class="page-link">01</a></li>
+                            <li class="page-item active"><a href="#" class="page-link">02</a></li>
+                            <li class="page-item"><a href="#" class="page-link">03</a></li>
+                            <li class="page-item"><a href="#" class="page-link">04</a></li>
+                            <li class="page-item"><a href="#" class="page-link">09</a></li>
+                            <li class="page-item">
+                                <a href="#" class="page-link" aria-label="Next">
+                                    <span aria-hidden="true">
+                                        <span class="lnr lnr-chevron-right"></span>
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="blog_right_sidebar">
+                    <aside class="single_sidebar_widget search_widget">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Search Blogger" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Search Posts'">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="button"><i class="lnr lnr-magnifier"></i></button>
+                            </span>
+                        </div><!-- /input-group -->
+                        <div class="br"></div>
+                    </aside>        
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}

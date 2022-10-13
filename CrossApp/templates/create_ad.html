@@ -32,7 +32,8 @@
                         <form class="row contact_form" method="POST" enctype="multipart/form-data">
                             {% csrf_token %}
                             <div class="col-md-12 form-group p_star">
-                                <img style="width:100%;height:100%;max-height:487px;" id="img-ad" src="{% static 'img/banner/banner-bg.jpg' %}">   
+                                
+                                <img style="width:100%;height:100%;max-height:487px;" id="img-ad" src="{{ blog.image.url }}">   
                             </div>
                             <div class="col-md-12 form-group p_star">
                                 {% render_field form.image class="form-control" %}   
@@ -83,7 +84,7 @@
                                 {% render_field form.price_on_sale class="form-control" placeholder="....." %}
                             </div>
                             <div class="col-md-6 form-group p_star">
-                                <label for="tilte">Price sale($)</label>
+                                <label for="tilte">Price rent($)</label>
                                 {% render_field form.price_for_rent class="form-control" placeholder="....." %}
                             </div>
                             <div class="col-md-12 form-group p_star">
@@ -119,17 +120,15 @@
                                 {% else %}
                                     <div style="border-radius:40%"> <img style=" width: 120px;height: 120px;border: 1px solid #000;border-radius:50%" id="img_profil" src="{% static 'img/user.png' %}"/> </div>
                                 {% endif %}
-                                <h4>Charlie Barber</h4>
-                                <p>Senior blog writer</p>
+                                <h4>{{ user.username }}</h4>
+                                <p>{{ user.job }}</p>
                                 <div class="social_icon">
                                     <a href="#"><i class="fa fa-facebook"></i></a>
                                     <a href="#"><i class="fa fa-twitter"></i></a>
                                     <a href="#"><i class="fa fa-github"></i></a>
                                     <a href="#"><i class="fa fa-behance"></i></a>
                                 </div>
-                                <p>Boot camps have its supporters andit sdetractors. Some people do not understand why you
-                                    should have to spend money on boot camp when you can get. Boot camps have itssuppor
-                                    ters andits detractors.</p>
+                                <p>{{ user.description }}</p>
                                 <div class="br"></div>
                             </aside>
                             <aside class="single_sidebar_widget popular_post_widget">
@@ -174,14 +173,21 @@
     <!--================End Checkout Area =================-->
     <script>
         var Element = document.getElementById('id_image');
-         var img = document.getElementById("img-ad");
-         Element.addEventListener('change', function() {
-           var url = URL.createObjectURL(Element.files[0]);
-           img.src = url;
-           console.log(url);
+        var img = document.getElementById("img-ad");
+        Element.addEventListener('change', function() {
+        var url = URL.createObjectURL(Element.files[0]);
+        img.src = url;
+        console.log(url);
          //   var d=document.querySelector(".p");
          //   d.textContent+=url;
      });
-     </script> -->
-    <!-- start footer Area -->
+     function view() {
+        var Element = document.getElementById('id_image');
+        var img = document.getElementById("img-ad");
+        
+        var url = URL.createObjectURL(Element.files[0]);
+        img.src = url;
+        console.log(url);}
+        view()
+    </script> 
 {% endblock %}
